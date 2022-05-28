@@ -122,9 +122,10 @@ Mat laplacian(Mat& src)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectFacesInImage(Mat& img)
+std::vector<Rect> detectFacesInImage(Mat& img, bool skip)
 {
-    Mat gray = convertograyScale(img);
+    if (skip == false )
+        Mat gray = convertograyScale(img);
     std::vector<Rect> faces;
     CascadeClassifier cascade;
     cascade.load(CASCADE_PATH_FRONTAL);
@@ -134,9 +135,13 @@ std::vector<Rect> detectFacesInImage(Mat& img)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectEyesInImage(Mat& img)
+std::vector<Rect> detectEyesInImage(Mat& img, bool skip)
 {
-    Mat gray = convertograyScale(img);
+
+    Mat gray;
+
+    if (skip == false )
+        gray = convertograyScale(img);
     std::vector<Rect> eyes;
     CascadeClassifier cascade;
     cascade.load(CASCADE_PATH_FRONTAL_EYE);

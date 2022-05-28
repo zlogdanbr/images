@@ -13,7 +13,7 @@ void FindAndDrawCircles(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img,false);
 
     for (auto& roi : faces)
     {
@@ -32,7 +32,7 @@ void FindAndDrawRectangles(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img,false);
 
     for (auto& roi : faces)
     {
@@ -51,13 +51,13 @@ void FindAndDFacesAndEyes(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, false);
 
     for (auto& roi : faces)
     {
         drawCirclesAtImgFromRoi(img, roi);
         Mat faceROI = convertRectoImg(roi, img);
-        std::vector<Rect> eyes = detectEyesInImage(faceROI);
+        std::vector<Rect> eyes = detectEyesInImage(faceROI,false);
         for (auto& roieye : eyes)
         {
             drawCirclesAtImgFromRoi(faceROI, roieye);
@@ -72,13 +72,13 @@ void FindAndDFacesAndEyes(Mat& img)
 {
     int scale = 1;
 
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, true);
 
     for (auto& roi : faces)
     {
         drawCirclesAtImgFromRoi(img, roi);
         Mat faceROI = convertRectoImg(roi, img);
-        std::vector<Rect> eyes = detectEyesInImage(faceROI);
+        std::vector<Rect> eyes = detectEyesInImage(faceROI,true);
         for (auto& roieye : eyes)
         {
             drawCirclesAtImgFromRoi(faceROI, roieye);
@@ -168,8 +168,7 @@ int main()
 {
     //std::string image_path = samples::findFile("eu.jpg");
     std::string image_path = "C:\\code\\image\\Image\\Image\\x64\\Debug\\eu.jpg";
-    Mat img = FindEdgesOnPhoto(image_path);
-    FindAndDFacesAndEyes(img);
+    FindAndDFacesAndEyes(image_path);
     waitKey(0); // Wait for a keystroke in the window
     destroyAllWindows();
     return 0;
