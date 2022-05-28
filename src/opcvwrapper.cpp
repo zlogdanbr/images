@@ -122,43 +122,52 @@ Mat laplacian(Mat& src)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectFacesInImage(Mat& img, CascadeClassifier& cascade)
+std::vector<Rect> detectFacesInImage(Mat& img)
 {
     Mat gray = convertograyScale(img);
     std::vector<Rect> faces;
-/*
-detectMultiScale
--------------------------------
-image	        Matrix of the type CV_8U containing an image where objects are detected.
-objects	        Vector of rectangles where each rectangle contains the detected object, the rectangles may be partially outside the original image.
-scaleFactor	    Parameter specifying how much the image size is reduced at each image scale.
-minNeighbors	Parameter specifying how many neighbors each candidate rectangle should have to retain it.
-flags	        Parameter with the same meaning for an old cascade as in the function cvHaarDetectObjects. It is not used for a new cascade.
-minSize	        Minimum possible object size. Objects smaller than that are ignored.
-maxSize	        Maximum possible object size. Objects larger than that are ignored. If maxSize == minSize model is evaluated on single scale.
-*/
-    cascade.detectMultiScale(gray, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(30, 30));
+    CascadeClassifier cascade;
+    cascade.load(CASCADE_PATH_FRONTAL);
+    cascade.detectMultiScale(img, faces);
     return faces;
 
 }
 
-// https://stackoverflow.com/questions/33994930/how-to-convert-the-selected-rectangle-from-the-image-into-grayscale
-void drawSquaresFaces(Mat& img, int scale, std::vector<Rect>& faces )
+// https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
+std::vector<Rect> detectEyesInImage(Mat& img)
 {
+    Mat gray = convertograyScale(img);
+    std::vector<Rect> eyes;
+    CascadeClassifier cascade;
+    cascade.load(CASCADE_PATH_FRONTAL_EYE);
+    cascade.detectMultiScale(img, eyes);
+    return eyes;
 
-    for (size_t i = 0; i < faces.size(); i++)
-    {
-        Rect r = faces[i];
-        Scalar color = Scalar(255, 0, 0);
-        rectangle(img,
-            Point(      cvRound(r.x*scale),
-                        cvRound(r.y*scale)),
-            Point(      cvRound((r.x + r.width - 1)*scale), 
-                        cvRound((r.y + r.height -1)*scale)),
-            color,
-            3,
-            8,
-            0);
+}
 
-    }
+// https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
+void drawCirclesAtImgFromRoi(Mat& img,Rect& roi)
+{
+    Point Mycenter(     roi.x + roi.width/2, 
+                        roi.y + roi.height/2 );
+
+    int radius = cvRound( (roi.width + roi.height)*0.25 );
+    circle( img, Mycenter, radius, Scalar( 255, 0, 0 ), 4 );
+
+}
+
+// https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
+void drawSquaresAtImgFromRoi(Mat& img, Rect& roi)
+{    
+    Scalar color = Scalar(255, 0, 0);
+    rectangle(img,
+        Point(cvRound(roi.x * 1),
+            cvRound(roi.y * 1)),
+        Point(cvRound((roi.x + roi.width - 1) * 1),
+            cvRound((roi.y + roi.height - 1) * 1)),
+        color,
+        3,
+        8,
+        0);
+
 }

@@ -2,11 +2,8 @@
 #include <iostream>
 
 
-/**
-* FindAllFacesInPthoto
-* Finds all faces in a photo specified by the path image_path
-*/
-void FindAllFacesInPthoto(const std::string& image_path)
+
+void FindAndDrawCircles(const std::string& image_path)
 {
     Mat img;
     int scale = 1;
@@ -16,51 +13,59 @@ void FindAllFacesInPthoto(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-   
-    CascadeClassifier cascade;
-    cascade.load(CASCADE_PATH_FRONTAL_EYE);// haarcascade_frontalface_default.xml
+    std::vector<Rect> faces = detectFacesInImage(img);
 
-    std::vector<Rect> faces = detectFacesInImage(img, cascade);
-    Mat inter = convertRectoImg(faces[0], img);
-    drawSquaresFaces(img, 1, faces);
-    showImage(img, "Faces at the picture");
-
-}
-
-/**
-* findandshowAllFacesInPhoto
-* Finds all faces in a photo specified by the path image_path
-* C:\opencv2\opencv\sources\data
-*/
-void findandshowAllFacesInPhoto(const std::string& image_path)
-{
-    Mat img;
-    int scale = 1;
-
-    if (loadImage(image_path, img) == false)
-    {
-        std::cout << "Could not read the image: " << image_path << std::endl;
-        return;
-    }
-
-    CascadeClassifier cascade;
-    cascade.load(CASCADE_PATH_FRONTAL);// haarcascade_frontalface_default.xml
-
-    std::vector<Rect> faces = detectFacesInImage(img, cascade);
-    std::vector<Mat> submages;
     for (auto& roi : faces)
     {
-        submages.emplace_back(convertRectoImg(roi, img));
+        drawCirclesAtImgFromRoi(img, roi);
+    }
+    showImage(img, "Final");
+}
+
+void FindAndDrawRectangles(const std::string& image_path)
+{
+    Mat img;
+    int scale = 1;
+
+    if (loadImage(image_path, img) == false)
+    {
+        std::cout << "Could not read the image: " << image_path << std::endl;
+        return;
+    }
+    std::vector<Rect> faces = detectFacesInImage(img);
+
+    for (auto& roi : faces)
+    {
+        drawSquaresAtImgFromRoi(img, roi);
+    }
+    showImage(img, "Final");
+}
+
+void FindAndDFacesAndEyes(const std::string& image_path)
+{
+    Mat img;
+    int scale = 1;
+
+    if (loadImage(image_path, img) == false)
+    {
+        std::cout << "Could not read the image: " << image_path << std::endl;
+        return;
+    }
+    std::vector<Rect> faces = detectFacesInImage(img);
+
+    for (auto& roi : faces)
+    {
+        drawCirclesAtImgFromRoi(img, roi);
+        Mat faceROI = convertRectoImg(roi, img);
+        std::vector<Rect> eyes = detectEyesInImage(faceROI);
+        for (auto& roieye : eyes)
+        {
+            drawCirclesAtImgFromRoi(faceROI, roieye);
+        }
     }
 
-    int i = 1;
-   
-    for (auto& image : submages)
-    {
-        std::string s = "image" + std::to_string(i);
-        saveImage(s, image);
-        i++;
-    }
+
+    showImage(img, "Final");
 }
 
 /**
@@ -120,7 +125,7 @@ void ImageAdjustmentsTesting(const std::string& image_path)
 * Finds edges in a poto specified by the path image_path using the laplacian
 * algorithm.
 */
-void detecting(const std::string& image_path)
+void FindEdgesOnPhoto(const std::string& image_path)
 {
     Mat img;
 
@@ -143,7 +148,7 @@ int main()
 {
     //std::string image_path = samples::findFile("eu.jpg");
     std::string image_path = "C:\\code\\image\\Image\\Image\\x64\\Debug\\f.jpg";
-    FindAllFacesInPthoto(image_path);
+    FindAndDFacesAndEyes(image_path);
     waitKey(0); // Wait for a keystroke in the window
     destroyAllWindows();
     return 0;
