@@ -8,9 +8,15 @@
 #include "opencv2/imgproc.hpp"
 #include <vector>
 
+#ifdef _WIN_
 #define CASCADE_PATH_FRONTAL_EXTENDED	"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalcatface_extended.xml"
 #define CASCADE_PATH_FRONTAL			"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_default.xml"
 #define CASCADE_PATH_FRONTAL_EYE		"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_eye.xml"
+#else
+#define CASCADE_PATH_FRONTAL_EXTENDED		"/usr/share/opencv4/haarcascades/haarcascade_frontalcatface_extended.xml"
+#define CASCADE_PATH_FRONTAL			"/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml"
+#define CASCADE_PATH_FRONTAL_EYE		"/usr/share/opencv4/haarcascades/haarcascade_eye.xml"
+#endif
 
 using namespace cv;
 
