@@ -1,5 +1,6 @@
-#include "opcvwrapper.h"
+﻿#include "opcvwrapper.h"
 
+// https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 bool loadImage(const std::string& image_path, Mat& img)
 {
     img = imread(image_path, IMREAD_COLOR);
@@ -10,24 +11,27 @@ bool loadImage(const std::string& image_path, Mat& img)
     return true;
 }
 
+// https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 bool saveImage(const std::string& image_path, Mat& img)
 {
     std::string f = image_path + ".jpg";
     return imwrite(f, img);
 }
 
+// https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 void showImage(const Mat& img, const std::string& title)
 {
     imshow(title, img);
 }
 
+// https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 Mat convertRectoImg(Rect& r, Mat& img)
 {
     Mat roi = Mat(img, r);
     return roi;
 }
 
-// https://www.opencv-srf.com/2018/02/h
+// https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 Mat convertograyScale(const Mat& img)
 {
     Mat grayscaleimage;
@@ -36,7 +40,7 @@ Mat convertograyScale(const Mat& img)
     return grayscaleimage;
 }
 
-// https://www.opencv-srf.com/2018/02/h
+//https://docs.opencv.org/4.x/d4/d1b/tutorial_histogram_equalization.html
 Mat equalizeGrayImage(const Mat& img)
 {
     Mat hist_equalized_image;
@@ -44,7 +48,7 @@ Mat equalizeGrayImage(const Mat& img)
     return hist_equalized_image;
 }
 
-// https://www.opencv-srf.com/2018/02/h
+//https://docs.opencv.org/4.x/d4/d1b/tutorial_histogram_equalization.html
 Mat equalizeColorImage(const Mat& img)
 {
     Mat hist_equalized_image;
@@ -63,6 +67,7 @@ Mat equalizeColorImage(const Mat& img)
     return hist_equalized_image;
 }
 
+//https://docs.opencv.org/4.x/d4/d1b/tutorial_histogram_equalization.html
 std::vector<Mat> splitChannel(Mat& img)
 {
     Mat colorrgb;
@@ -88,11 +93,6 @@ Mat GaussianImageSmooth(const Mat& img, int kernel_size)
     return Blurred;
 }
 
-// https://www.opencv-srf.com/2018/02/h
-void doThresholdBinary(const Mat& img)
-{
-    threshold(img, img, 128, 255, 1);
-}
 
 // https://docs.opencv.org/3.4/d5/db5/tutorial_laplace_operator.html
 Mat laplacian(Mat& src)
@@ -122,10 +122,13 @@ Mat laplacian(Mat& src)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectFacesInImage(Mat& img, bool skip)
+std::vector<Rect> detectFacesInImage(Mat& img)
 {
-    if (skip == false )
-        Mat gray = convertograyScale(img);
+    if (img.type() != CV_8UC1)
+    {   // not gray-level image
+        convertograyScale(img);
+    }
+
     std::vector<Rect> faces;
     CascadeClassifier cascade;
     cascade.load(CASCADE_PATH_FRONTAL);
@@ -135,13 +138,14 @@ std::vector<Rect> detectFacesInImage(Mat& img, bool skip)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectEyesInImage(Mat& img, bool skip)
+std::vector<Rect> detectEyesInImage(Mat& img)
 {
 
-    Mat gray;
+    if (img.type() != CV_8UC1)
+    {   // not gray-level image
+        convertograyScale(img);
+    }
 
-    if (skip == false )
-        gray = convertograyScale(img);
     std::vector<Rect> eyes;
     CascadeClassifier cascade;
     cascade.load(CASCADE_PATH_FRONTAL_EYE);
@@ -175,4 +179,88 @@ void drawSquaresAtImgFromRoi(Mat& img, Rect& roi)
         8,
         0);
 
+}
+
+// https://docs.opencv.org/4.x/d4/dbd/tutorial_filter_2d.html
+Mat ApplyCustom2Dfilter(const Mat& img, Mat& kernel, int ddepth, Point& anchor, double delta)
+{
+    Mat final;
+
+    //  src: Source image
+    //  dst : Destination image
+    //  ddepth : The depth of dst.A negative value(such as −1) indicates that the depth is the same as the source.
+    //  kernel : The kernel to be scanned through the image
+    //  anchor : The position of the anchor relative to its kernel.The location Point(-1, -1) indicates the center by default.
+    //  delta : A value to be added to each pixel during the correlation.By default it is 0
+    //  BORDER_DEFAULT : We let this value by default (more details in the following tutorial)
+
+    filter2D(   img,            
+                final, 
+                ddepth, 
+                kernel, 
+                anchor, 
+                delta, 
+                BORDER_DEFAULT);
+    return final;
+}
+
+
+void segmentationOfROI(Mat& img, Rect& roi,int r, int g, int b)
+{
+
+    for (int y = 0; y < img.rows; y++)
+    {
+        for (int x = 0; x < img.cols; x++)
+        {
+            Vec3b color = img.at<Vec3b>(Point(x, y));
+            if (roi.contains(Point(x, y)) == true)
+            {
+                color[0] = r;
+                color[1] = g;
+                color[2] = b;
+                //set pixel
+                img.at<Vec3b>(Point(x,y)) = color;
+            }
+        }
+    } 
+
+}
+
+// https://docs.opencv.org/4.x/df/d0d/tutorial_find_contours.html
+int findcontours(   const Mat& img,
+                    RoiAretype& contours,
+                    std::vector<Vec4i>& hierarchy,
+                    int thresh)
+{
+
+    Mat target_image;
+
+    if (img.type() != CV_8UC1)
+    {
+        cvtColor(img, target_image, COLOR_BGR2GRAY);
+    }
+    else
+        target_image = img;
+
+    blur(target_image, target_image, Size(3, 3));
+    Mat canny_output;
+    Canny(target_image, canny_output, thresh, thresh*2);
+    findContours(   canny_output,
+                    contours,
+                    hierarchy,
+                    RETR_TREE,
+                    CHAIN_APPROX_SIMPLE);
+
+    return 0;
+}
+
+// https://docs.opencv.org/4.x/df/d0d/tutorial_find_contours.html
+void drawCountour(RoiAretype& contours, Mat& img, std::vector<Vec4i>& hierarchy)
+{
+    RNG rng(12345);
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        Scalar color = Scalar(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));
+        drawContours(img, contours, (int)i, color, 2, LINE_8, hierarchy, 0);
+    }
 }
