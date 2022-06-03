@@ -182,8 +182,9 @@ void FindEdgesOnPhoto(const std::string& image_path)
     int threshold = 10;
     std::cout << "Type the threshold level: ";
     std::cin >> threshold;
-
-    findcontours(Imfinal, contours, hierarchy, threshold);
+    
+    Mat edges;
+    findcontours(Imfinal, contours, hierarchy, threshold,edges);
     drawCountour(contours, Imfinal, hierarchy);
     showImage(Imfinal, "Contornos");
 }
@@ -223,7 +224,8 @@ void FindTheCountours(const std::string& image_path)
     std::cout << "Type the threshold level: ";
     std::cin >> threshold;
 
-    findcontours(img, contours, hierarchy, threshold);
+    Mat edges;
+    findcontours(img, contours, hierarchy, threshold,edges);
     drawCountour(contours, img, hierarchy);
     showImage(img, "Contornos");
 

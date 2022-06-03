@@ -230,22 +230,22 @@ void segmentationOfROI(Mat& img, Rect& roi,int r, int g, int b)
 int findcontours(   const Mat& img,
                     RoiAretype& contours,
                     std::vector<Vec4i>& hierarchy,
-                    int thresh)
+                    int thresh,
+                    Mat& edges)
 {
-
-    Mat target_image;
 
     if (img.type() != CV_8UC1)
     {
-        cvtColor(img, target_image, COLOR_BGR2GRAY);
+        cvtColor(img, edges, COLOR_BGR2GRAY);
     }
     else
-        target_image = img;
+        edges = img;
 
-    blur(target_image, target_image, Size(3, 3));
-    Mat canny_output;
-    Canny(target_image, canny_output, thresh, thresh*2);
-    findContours(   canny_output,
+    blur(edges, edges, Size(3, 3));
+
+    // https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html
+    Canny(edges, edges, thresh, thresh*2);
+    findContours(   edges,
                     contours,
                     hierarchy,
                     RETR_TREE,
@@ -257,10 +257,13 @@ int findcontours(   const Mat& img,
 // https://docs.opencv.org/4.x/df/d0d/tutorial_find_contours.html
 void drawCountour(RoiAretype& contours, Mat& img, std::vector<Vec4i>& hierarchy)
 {
+    // https://docs.opencv.org/3.4/d1/dd6/classcv_1_1RNG.html#a2d2f54a5a1145e5b9f645b8983c6ae75
     RNG rng(12345);
     for (size_t i = 0; i < contours.size(); i++)
     {
         Scalar color = Scalar(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));
+        //https://docs.opencv.org/3.4/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
         drawContours(img, contours, (int)i, color, 2, LINE_8, hierarchy, 0);
+        //drawContours(img, contours, (int)i, color, 2, FILLED, hierarchy, 0);
     }
 }

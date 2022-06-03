@@ -40,7 +40,7 @@ void drawCirclesAtImgFromRoi(Mat& img, Rect& roi);
 void drawSquaresAtImgFromRoi(Mat& img, Rect& roi);
 std::vector<Mat> splitChannel(Mat& img);
 void segmentationOfROI(Mat& img, Rect& roi,int,int,int);
-int findcontours(const Mat& img, RoiAretype& contours, std::vector<Vec4i>& hierarchy, int thresh);
+int findcontours(const Mat& img, RoiAretype& contours, std::vector<Vec4i>& hierarchy, int thresh, Mat& edges);
 void drawCountour(RoiAretype& contours, Mat& img, std::vector<Vec4i>& hierarchy);
 
 #endif
