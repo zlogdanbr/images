@@ -8,6 +8,7 @@
 #define image_path_mamo2 "C:\\code\\image\\Image\\Image\\x64\\Debug\\TESTE.BMP"
 #define image_path_eu "C:\\code\\image\\Image\\Image\\x64\\Debug\\eu.jpg"
 #define image_path_faces "C:\\code\\image\\Image\\Image\\x64\\Debug\\f.jpg"
+#define image_path_duda "C:\\code\\image\\Image\\Image\\x64\\Debug\\DSCI0343.JPG"
 #endif
 
 void FindAndDrawCircles(const std::string& image_path);

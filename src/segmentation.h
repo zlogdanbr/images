@@ -8,7 +8,60 @@ public:
 	{
 		loadImage(path, original);
 	};
-	~NoduleRec()
+
+	explicit NoduleRec(const NoduleRec& n)
+	{
+		if (&n != this)
+		{
+			this->original = n.original;
+			this->final = n.final;
+			this->edges = n.edges;
+			this->contours = n.contours;
+			this->hierarchy = n.hierarchy;
+		}
+
+	}
+
+	explicit NoduleRec(const NoduleRec&& n)
+	{
+		this->original = n.original;
+		this->final = n.final;
+		this->edges = n.edges;
+		this->contours = n.contours;
+		this->hierarchy = n.hierarchy;
+		this->resetInternal();
+	}
+	
+	NoduleRec& operator=(const NoduleRec& n)
+	{
+		if (&n != this)
+		{
+			this->original = n.original;
+			this->final = n.final;
+			this->edges = n.edges;
+			this->contours = n.contours;
+			this->hierarchy = n.hierarchy;
+
+		}
+		return *this;
+	}
+
+	NoduleRec& operator=(const NoduleRec&& n) noexcept
+	{
+		if (&n != this)
+		{
+			this->original = n.original;
+			this->final = n.final;
+			this->edges = n.edges;
+			this->contours = n.contours;
+			this->hierarchy = n.hierarchy;
+			this->resetInternal();
+
+		}
+		return *this;
+	}
+
+	virtual ~NoduleRec()
 	{
 		resetInternal();
 	};
@@ -18,23 +71,61 @@ public:
 	const bool ErrorInOriginalLoading() const { return original.empty(); };
 	RoiAretype getRoi() const { return contours; };
 	std::vector<Vec4i> gethierarchy() const { return hierarchy; };
-	bool preprocess();
-	bool findContornos();
+	bool findContornos(int threshold);
 	void HighlightRoi();
+
+	void loadNewImage(const std::string& path)
+	{	
+		Mat tmp;
+		loadImage(path, tmp);
+		resetInternal();
+		tmp.copyTo(original);
+		tmp.release();
+	}
+
 	void resetInternal()
 	{
 		contours.clear();
 		hierarchy.clear();
+		original.release();
+		final.release();
+		edges.release();
 	}
-
-	
-	
+		
 private:
-	NoduleRec(const NoduleRec&) = delete;
-	NoduleRec operator=(const NoduleRec&) = delete;
 	Mat original;
 	Mat final;
 	Mat edges;
 	RoiAretype contours;
 	std::vector<Vec4i> hierarchy;
 };
+
+class EyesDetector
+{
+public:
+	explicit EyesDetector(NoduleRec& n): n(n){ };
+	virtual ~EyesDetector() {};
+	Mat findEyes(int tol, int option, const std::string& cascade_file);
+	std::vector<Rect> removeNonEyes(std::vector<Rect>& eyes,int tol);
+
+private:
+
+	inline int calculateRadius(const Rect& r) const
+	{
+		int sum = r.width + r.height;
+		return cvRound( sum*0.25);
+	}
+
+	inline int getYCenter(const Rect& r) const
+	{
+		return r.y + r.height / 2;
+	}
+
+	inline int getXCenter(const Rect& r) const
+	{
+		return r.x + r.width / 2;
+	}
+
+	NoduleRec& n;
+};
+

@@ -21,7 +21,10 @@ bool saveImage(const std::string& image_path, Mat& img)
 // https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
 void showImage(const Mat& img, const std::string& title)
 {
-    imshow(title, img);
+
+    Mat reducedImage;
+    cv::pyrDown(img, reducedImage);
+    imshow(title, reducedImage);
 }
 
 // https://docs.opencv.org/4.x/d5/d98/tutorial_mat_operations.html
@@ -85,6 +88,13 @@ Mat blurImageSmooth(const Mat& img, int kernel_size)
     return Blurred;
 }
 
+Mat MedianImageSmooth(const Mat& img, int kernel_size)
+{
+    Mat MedianI;
+    medianBlur(img, MedianI, kernel_size);
+    return MedianI;
+}
+
 // https://docs.opencv.org/3.4/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html
 Mat GaussianImageSmooth(const Mat& img, int kernel_size)
 {
@@ -122,7 +132,7 @@ Mat laplacian(Mat& src)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectFacesInImage(Mat& img)
+std::vector<Rect> detectFacesInImage(Mat& img, const std::string& cascade_file)
 {
     if (img.type() != CV_8UC1)
     {   // not gray-level image
@@ -138,7 +148,7 @@ std::vector<Rect> detectFacesInImage(Mat& img)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectEyesInImage(Mat& img)
+std::vector<Rect> detectEyesInImage(Mat& img, const std::string& cascade_file)
 {
 
     if (img.type() != CV_8UC1)
@@ -148,7 +158,8 @@ std::vector<Rect> detectEyesInImage(Mat& img)
 
     std::vector<Rect> eyes;
     CascadeClassifier cascade;
-    cascade.load(CASCADE_PATH_FRONTAL_EYE);
+    //cascade.load(CASCADE_PATH_FRONTAL_EYE); 
+    cascade.load(CASCADE_PATH_FRONTAL_EYE_CUDA);
     cascade.detectMultiScale(img, eyes);
     return eyes;
 
@@ -244,7 +255,7 @@ int findcontours(   const Mat& img,
     blur(edges, edges, Size(3, 3));
 
     // https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html
-    Canny(edges, edges, thresh, thresh*2);
+    Canny(edges, edges, thresh, 350);
     findContours(   edges,
                     contours,
                     hierarchy,

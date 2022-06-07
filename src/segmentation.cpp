@@ -1,39 +1,53 @@
 #include "segmentation.h"
 
 
-bool NoduleRec::preprocess()
+bool NoduleRec::findContornos(int threshold)
 {
-	final = equalizeColorImage(original);
-
-	if (final.empty() == true)
-	{
-		return false;
-	}
-
-	final = laplacian(final);
-
-	if (final.empty() == true)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool NoduleRec::findContornos()
-{
-	findcontours(final, this->contours, this->hierarchy, 50, this->edges);
+	original.copyTo(final);
+	findcontours(final, this->contours, this->hierarchy, threshold, this->edges);
 	return final.empty();
 }
 
-
 void NoduleRec::HighlightRoi()
 {
-	final.release();
+	//final.release();
 	original.copyTo(final);
 	drawCountour(this->contours, final, this->hierarchy);
 }
 
+std::vector<Rect>EyesDetector::removeNonEyes(std::vector<Rect>& eyes, int tol)
+{
+	std::vector<Rect> ActualEyes;
 
-//typedef std::vector< std::vector<Point> > RoiAretype;
+	for (auto& it : eyes)
+	{
+		if  ( calculateRadius(it) >= tol )
+		{
+			ActualEyes.push_back(it);
+		}
+	}
+
+	return ActualEyes;
+}
+
+
+Mat EyesDetector::findEyes(int tol, int option, const std::string& cascade_file )
+{
+	Mat eyes_img;
+	if (option == 1)
+		eyes_img = n.getFinalImg();
+	else
+		eyes_img = n.getOriginalImg();
+
+	std::vector<Rect> eyes = detectEyesInImage(eyes_img, cascade_file);
+	std::vector<Rect> ActualEyes = removeNonEyes(eyes, tol);
+
+	for (auto& r : ActualEyes)
+	{
+		drawCirclesAtImgFromRoi(eyes_img, r);
+	}
+
+	return eyes_img;
+}
+
 

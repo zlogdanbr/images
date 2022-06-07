@@ -10,7 +10,7 @@ void FindAndDrawCircles(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, CASCADE_PATH_FRONTAL_EXTENDED);
 
     for (auto& roi : faces)
     {
@@ -29,7 +29,7 @@ void FindAndDrawRectangles(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, CASCADE_PATH_FRONTAL_EXTENDED);
 
     for (auto& roi : faces)
     {
@@ -48,13 +48,13 @@ void FindAndDFacesAndEyes(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, CASCADE_PATH_FRONTAL);
 
     for (auto& roi : faces)
     {
         drawCirclesAtImgFromRoi(img, roi);
         Mat faceROI = convertRectoImg(roi, img);
-        std::vector<Rect> eyes = detectEyesInImage(faceROI);
+        std::vector<Rect> eyes = detectEyesInImage(faceROI, CASCADE_PATH_FRONTAL_EYE);
         for (auto& roieye : eyes)
         {
             drawCirclesAtImgFromRoi(faceROI, roieye);
@@ -69,13 +69,13 @@ void FindAndDFacesAndEyes(Mat& img)
 {
     int scale = 1;
 
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, CASCADE_PATH_FRONTAL);
 
     for (auto& roi : faces)
     {
         drawCirclesAtImgFromRoi(img, roi);
         Mat faceROI = convertRectoImg(roi, img);
-        std::vector<Rect> eyes = detectEyesInImage(faceROI);
+        std::vector<Rect> eyes = detectEyesInImage(faceROI, CASCADE_PATH_FRONTAL_EYE);
         for (auto& roieye : eyes)
         {
             drawCirclesAtImgFromRoi(faceROI, roieye);
@@ -96,7 +96,7 @@ void segmentImage(const std::string& image_path)
         std::cout << "Could not read the image: " << image_path << std::endl;
         return;
     }
-    std::vector<Rect> faces = detectFacesInImage(img);
+    std::vector<Rect> faces = detectFacesInImage(img, CASCADE_PATH_FRONTAL_EXTENDED);
     Mat final = img;
     for (auto roi = faces.begin(); roi != faces.end(); roi++)
     {
