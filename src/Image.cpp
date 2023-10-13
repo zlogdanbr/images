@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	NoduleRec n{ image_path_eu };
+	NoduleRec n{ "George_Costanza.jpg" };
 
 	if (n.ErrorInOriginalLoading() == false)
 	{
