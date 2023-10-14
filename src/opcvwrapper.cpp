@@ -132,7 +132,7 @@ Mat laplacian(Mat& src)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectFacesInImage(Mat& img, const std::string& cascade_file)
+std::vector<Rect> detectFacesInImage(Mat& img)
 {
     if (img.type() != CV_8UC1)
     {   // not gray-level image
@@ -148,7 +148,7 @@ std::vector<Rect> detectFacesInImage(Mat& img, const std::string& cascade_file)
 }
 
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
-std::vector<Rect> detectEyesInImage(Mat& img, const std::string& cascade_file)
+std::vector<Rect> detectEyesInImage(Mat& img)
 {
 
     if (img.type() != CV_8UC1)

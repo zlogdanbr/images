@@ -12,17 +12,11 @@
 #include <algorithm>
 #include <cmath>
 
-#ifdef _WIN_
-#define CASCADE_PATH_FRONTAL_EXTENDED	"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalcatface_extended.xml"
-#define CASCADE_PATH_FRONTAL			"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_default.xml"
-#define CASCADE_PATH_FRONTAL_EYE		"C:\\opencv2\\opencv\\sources\\data\\haarcascades\\haarcascade_eye.xml"
-#define CASCADE_PATH_FRONTAL_EYE_CUDA	"C:\\opencv2\\opencv\\sources\\data\\haarcascades_cuda\\haarcascade_eye.xml"
-#else
-#define CASCADE_PATH_FRONTAL_EXTENDED		"/usr/share/opencv4/haarcascades/haarcascade_frontalcatface_extended.xml"
-#define CASCADE_PATH_FRONTAL			"/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml"
-#define CASCADE_PATH_FRONTAL_EYE		"/usr/share/opencv4/haarcascades/haarcascade_eye.xml"
-#define CASCADE_PATH_FRONTAL_EYE_CUDA	"/usr/share/opencv4/haarcascades/haarcascades_cuda/haarcascade_eye.xml"
-#endif
+const std::string CASCADE_PATH_FRONTAL_EXTENDED	= "C:\\Users\\Administrador\\lib\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalcatface_extended.xml";
+const std::string CASCADE_PATH_FRONTAL			= "C:\\Users\\Administrador\\lib\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_default.xml";
+const std::string CASCADE_PATH_FRONTAL_EYE		= "C:\\Users\\Administrador\\lib\\opencv\\sources\\data\\haarcascades\\haarcascade_eye.xml";
+const std::string CASCADE_PATH_FRONTAL_EYE_CUDA	= "C:\\Users\\Administrador\\lib\\opencv\\sources\\data\\haarcascades_cuda\\haarcascade_eye.xml";
+
 
 using namespace cv;
 
@@ -40,8 +34,8 @@ Mat MedianImageSmooth(const Mat& img, int kernel_size);
 Mat ApplyCustom2Dfilter(const Mat& img, Mat& kernel, int ddepth, Point& anchor, double delta);
 Mat laplacian(Mat& src);
 Mat convertRectoImg(Rect& r, Mat& img);
-std::vector<Rect> detectFacesInImage(Mat& img, const std::string& cascade_file);
-std::vector<Rect> detectEyesInImage(Mat& img, const std::string& cascade_file);
+std::vector<Rect> detectFacesInImage(Mat& img);
+std::vector<Rect> detectEyesInImage(Mat& img);
 void drawCirclesAtImgFromRoi(Mat& img, Rect& roi);
 void drawSquaresAtImgFromRoi(Mat& img, Rect& roi);
 std::vector<Mat> splitChannel(Mat& img);

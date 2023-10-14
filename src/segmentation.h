@@ -21,16 +21,6 @@ public:
 		}
 
 	}
-
-	explicit NoduleRec(const NoduleRec&& n)
-	{
-		this->original = n.original;
-		this->final = n.final;
-		this->edges = n.edges;
-		this->contours = n.contours;
-		this->hierarchy = n.hierarchy;
-		this->resetInternal();
-	}
 	
 	NoduleRec& operator=(const NoduleRec& n)
 	{
@@ -41,21 +31,7 @@ public:
 			this->edges = n.edges;
 			this->contours = n.contours;
 			this->hierarchy = n.hierarchy;
-
-		}
-		return *this;
-	}
-
-	NoduleRec& operator=(const NoduleRec&& n) noexcept
-	{
-		if (&n != this)
-		{
-			this->original = n.original;
-			this->final = n.final;
-			this->edges = n.edges;
-			this->contours = n.contours;
-			this->hierarchy = n.hierarchy;
-			this->resetInternal();
+			//n.resetInternal();
 
 		}
 		return *this;
@@ -65,6 +41,7 @@ public:
 	{
 		resetInternal();
 	};
+	
 	const Mat& getOriginalImg() const { return original; };
 	const Mat& getFinalImg() const { return final; };
 	const Mat& getEdgesImg() const { return edges; };

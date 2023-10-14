@@ -3,13 +3,10 @@
 
 #include "opcvwrapper.h"
 
-#ifdef _WIN_
-#define image_path_mamo1 "C:\\code\\image\\Image\\Image\\x64\\Debug\\TESTE4.BMP"
-#define image_path_mamo2 "C:\\code\\image\\Image\\Image\\x64\\Debug\\TESTE.BMP"
-#define image_path_eu "C:\\code\\image\\Image\\Image\\x64\\Debug\\eu.jpg"
-#define image_path_faces "C:\\code\\image\\Image\\Image\\x64\\Debug\\f.jpg"
-#define image_path_duda "C:\\code\\image\\Image\\Image\\x64\\Debug\\DSCI0343.JPG"
-#endif
+
+#define image_path_eu 		"C:\\Users\\Administrador\\Documents\\GitHub\\images\\data\\eu.jpg"
+#define image_path_faces 	"C:\\sers\\Administrador\\Documents\\GitHub\\images\\data\\f.jpg"
+
 
 void FindAndDrawCircles(const std::string& image_path);
 void FindAndDrawRectangles(const std::string& image_path);

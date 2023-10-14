@@ -39,7 +39,7 @@ Mat EyesDetector::findEyes(int tol, int option, const std::string& cascade_file 
 	else
 		eyes_img = n.getOriginalImg();
 
-	std::vector<Rect> eyes = detectEyesInImage(eyes_img, cascade_file);
+	std::vector<Rect> eyes = detectEyesInImage(eyes_img);
 	std::vector<Rect> ActualEyes = removeNonEyes(eyes, tol);
 
 	for (auto& r : ActualEyes)
