@@ -15,7 +15,7 @@ void NoduleRec::HighlightRoi()
 	drawCountour(this->contours, final, this->hierarchy);
 }
 
-std::vector<Rect>EyesDetector::removeNonEyes(std::vector<Rect>& eyes, int tol)
+std::vector<Rect> EyesDetector::removeNonEyes(std::vector<Rect>& eyes, int tol)
 {
 	std::vector<Rect> ActualEyes;
 

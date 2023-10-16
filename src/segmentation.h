@@ -31,8 +31,6 @@ public:
 			this->edges = n.edges;
 			this->contours = n.contours;
 			this->hierarchy = n.hierarchy;
-			//n.resetInternal();
-
 		}
 		return *this;
 	}
