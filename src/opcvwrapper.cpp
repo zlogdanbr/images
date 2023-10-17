@@ -226,9 +226,9 @@ void segmentationOfROI(Mat& img, Rect& roi,int r, int g, int b)
             Vec3b color = img.at<Vec3b>(Point(x, y));
             if (roi.contains(Point(x, y)) == true)
             {
-                color[0] = r;
-                color[1] = g;
-                color[2] = b;
+                color[0] = static_cast<unsigned char>(r);
+                color[1] = static_cast<unsigned char>(g);
+                color[2] = static_cast<unsigned char>(b);
                 //set pixel
                 img.at<Vec3b>(Point(x,y)) = color;
             }

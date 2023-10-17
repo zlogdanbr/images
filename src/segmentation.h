@@ -80,7 +80,7 @@ class EyesDetector
 public:
 	explicit EyesDetector(NoduleRec& n): n(n){ };
 	virtual ~EyesDetector() {};
-	Mat findEyes(int tol, int option, const std::string& cascade_file);
+	Mat findEyes(int tol, int option);
 	std::vector<Rect> removeNonEyes(std::vector<Rect>& eyes,int tol);
 
 private:

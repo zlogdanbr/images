@@ -31,7 +31,7 @@ std::vector<Rect> EyesDetector::removeNonEyes(std::vector<Rect>& eyes, int tol)
 }
 
 
-Mat EyesDetector::findEyes(int tol, int option, const std::string& cascade_file )
+Mat EyesDetector::findEyes(int tol, int option)
 {
 	Mat eyes_img;
 	if (option == 1)
