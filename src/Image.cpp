@@ -13,7 +13,9 @@ int main()
 		n.findContornos(1);
 		n.HighlightRoi();
 		showImage(n.getFinalImg(), "Final");
+		waitKey(0);
 		showImage(n.getEdgesImg(), "Edges");
+		waitKey(0);
 	}
 
 	waitKey(0);

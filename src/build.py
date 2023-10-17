@@ -86,15 +86,13 @@ def build_project(build_cmd):
     result = run_win_cmd(build_cmd)
     
     if result == 0:
-        dir = os.getcwd()
-        remove_files(dir,"obj")           
+        dir = os.getcwd()           
     
     print("-------------------------------------------------------------------------------------------------------------------------") 
             
     
 def main(argv):
          
-    os.system("cls")
     
     if len(argv) < 2:
         print("Error missing parameters")
@@ -102,9 +100,18 @@ def main(argv):
      
     type = argv[1]
 
-    if type == "--project":        
-        build_project(BUILD_CMD)        
+    if type == "--project":  
+        
+        build_project(BUILD_CMD)  
+    
+    elif type == "--clean":
+        
+        dir = os.getcwd()
+        remove_files(dir,"exe")
+        remove_files(dir,"obj")
+        
     else:
+        
         build_single(BUILD_CMD,argv[1])
                  
 if __name__ == '__main__':
