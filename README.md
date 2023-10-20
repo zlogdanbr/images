@@ -21,8 +21,11 @@ In order to use:
 - Install python 3.10 or above
 - Install Visual Studio 2022 and C++ tools
 - This is the configuration file that will run the building
-   https://github.com/zlogdanbr/images/blob/main/src/config.py
-- Make.bat will just call python --project and build what is described in the config.py file.
+  https://github.com/zlogdanbr/images/blob/main/src/config.py
+
+- Download the contents of 
+https://github.com/zlogdanbr/mycpp/tree/main/build_tool
+And add the folder you download them to your windows path
 
 You can use it at your will, and please remember to mention me if possible.
 
