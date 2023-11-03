@@ -1,5 +1,5 @@
 # Images
-This is a project I use to learning OpenCV ( https://opencv.org ) and try to recapp knowledge I had while I was in college.
+This is a project I use to learning OpenCV ( https://opencv.org ) and try to recaptulate knowledge I had while I was in college.
 
 So, I installed OpenCV in my Windows machine and used a custom python script to build this project. 
 
@@ -20,7 +20,7 @@ I provide a segmentation class and an eye recognition algorithm class
 
 In order to use:
 
-- git clone https://github.com/zlogdanbr/images.git
+- git clone https://github.com/zlogdanbr/mycpp.git
 - Install python 3.10 or above
 - Install Visual Studio 2022 and C++ tools
 - This is the configuration file that will run the building
