@@ -131,6 +131,9 @@ Mat laplacian(Mat& src)
     return abs_dst;
 }
 
+// Only worked on linux Windows 10
+// Apparently there is some internal driver that prevents me from using
+// cascade classifiers
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
 std::vector<Rect> detectFacesInImage(Mat& img)
 {
@@ -147,6 +150,9 @@ std::vector<Rect> detectFacesInImage(Mat& img)
 
 }
 
+// Only worked on linux Windows 10
+// Apparently there is some internal driver that prevents me from using
+// cascade classifiers
 // https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
 std::vector<Rect> detectEyesInImage(Mat& img)
 {
